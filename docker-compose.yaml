@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  backend:
+    image: voidmain1812/bun-with-node:0.0.1-v0
+    container_name: backend
+    command: tail -f /dev/null
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/workspace:cached
+
+  redis-cache:
+    image: redis/redis-stack:7.4.0-v0
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    command:
+      [
+        "/entrypoint.sh",
+        "./redis-stack.conf",
+        "redis-server",
+        "--loadmodule",
+        "/opt/redis-stack/lib/redisearch.so",
+      ]
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+    volumes:
+      - .:/workspace:cached
+    restart: unless-stopped

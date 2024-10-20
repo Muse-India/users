@@ -1,0 +1,7 @@
+{
+  "name": "redis-container",
+  "dockerComposeFile": ["../../docker-compose.yaml"],
+  "service": "redis-cache",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspace"
+}

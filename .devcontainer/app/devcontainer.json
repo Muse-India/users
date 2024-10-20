@@ -1,0 +1,9 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/marcosgomesneto/bun-devcontainers/tree/main/src/basic-bun
+{
+  "name": "backend-container",
+  "dockerComposeFile": ["../../docker-compose.yaml"],
+  "service": "backend",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspace"
+}
