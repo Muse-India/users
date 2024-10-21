@@ -1,7 +1,7 @@
 {
-  "name": "redis-container",
+  "name": "grafana-container",
   "dockerComposeFile": ["../../docker-compose.yaml"],
-  "service": "cache",
+  "service": "grafana",
   "shutdownAction": "stopCompose",
   "workspaceFolder": "/workspace"
 }

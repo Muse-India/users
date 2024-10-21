@@ -1,10 +1,14 @@
 {
   "name": "hono-with-bun",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "prisma-build": "bunx prisma db push && bunx prisma studio",
+    "studio": "bunx prisma studio"
   },
   "dependencies": {
+    "@prisma/client": "^5.21.1",
     "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
     "hono": "^4.6.5",
     "redis": "^4.7.0",
     "redis-om": "^0.4.6",
@@ -12,8 +16,10 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest",
     "@types/redis": "^4.0.11",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prisma": "^5.21.1"
   }
 }

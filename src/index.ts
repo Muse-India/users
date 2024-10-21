@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import definedRoutes from "./routes/routes";
+import { connectToRedis } from "../libs/redis/redis.index";
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,6 +13,9 @@ const app = new Hono().basePath("/api");
 app.use(cors());
 
 app.route("/basepath", definedRoutes);
+
+// configuring redis cache
+await connectToRedis();
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");

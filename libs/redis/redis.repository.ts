@@ -1,5 +1,5 @@
 import { Repository } from "redis-om";
-import { redisSchema } from "./redis.schema";
+import { userSchema } from "./redis.schema";
 import { redis } from "./redis.client";
 
-export const redisRepository = new Repository(redisSchema, redis);
+export const userRepository = new Repository(userSchema, redis);

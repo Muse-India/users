@@ -1,7 +1,7 @@
 {
-  "name": "redis-container",
+  "name": "kafka-container",
   "dockerComposeFile": ["../../docker-compose.yaml"],
-  "service": "cache",
+  "service": "kafka",
   "shutdownAction": "stopCompose",
   "workspaceFolder": "/workspace"
 }

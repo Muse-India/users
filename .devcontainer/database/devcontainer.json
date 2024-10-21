@@ -1,7 +1,7 @@
 {
-  "name": "redis-container",
+  "name": "mongodb-container",
   "dockerComposeFile": ["../../docker-compose.yaml"],
-  "service": "cache",
+  "service": "database",
   "shutdownAction": "stopCompose",
   "workspaceFolder": "/workspace"
 }

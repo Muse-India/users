@@ -1,0 +1,8 @@
+{
+    "name": "zookeeper-container",
+    "dockerComposeFile": ["../../docker-compose.yaml"],
+    "service": "zookeeper",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/workspace"
+  }
+  

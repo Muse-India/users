@@ -1,5 +1,5 @@
-import { redisRepository } from "./redis.repository";
+import { userRepository } from "./redis.repository";
 
 export const connectToRedis = async () => {
-  await redisRepository.createIndex();
+  await userRepository.createIndex();
 };

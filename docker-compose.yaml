@@ -3,16 +3,16 @@ version: "3"
 services:
   backend:
     image: voidmain1812/bun-with-node:0.0.1-v0
-    container_name: backend
+    container_name: users-backend
     command: tail -f /dev/null
     ports:
-      - "3000:3000"
+      - "4000:3000"
     volumes:
       - .:/workspace:cached
 
-  redis-cache:
+  cache:
     image: redis/redis-stack:7.4.0-v0
-    container_name: redis-cache
+    container_name: users-cache
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -27,5 +27,110 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
     volumes:
-      - .:/workspace:cached
+      - users-cache-data:/data/cache
     restart: unless-stopped
+
+  database:
+    image: mongodb/mongodb-community-server:7.0.1-ubi9
+    container_name: users-database
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sourabh
+      - MONGO_INITDB_ROOT_PASSWORD=sourabhS1812
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://sourabh:sourabhS1812@192.168.31.172:27017/?authSource=admin --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - users-db-data:/data/db
+    restart: unless-stopped
+
+  zookeeper:
+    image: zookeeper:3.9.2
+    container_name: users-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    volumes:
+      - users-zookeeper-data:/data/zookeeper
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 128M
+
+  kafka:
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: users-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 192.168.31.172:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.31.172:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    volumes:
+      - users-kafka-data:/data/kafka
+    healthcheck:
+      test: ["CMD", "nc", "-z", "192.168.31.172", "9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+
+  prometheus:
+    image: prom/prometheus
+    container_name: users-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: users-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=sourabh
+      - GF_SECURITY_ADMIN_PASSWORD=sourabhS1812
+    volumes:
+      - user-grafana-storage:/etc/grafana/provisioning/datasources
+
+volumes:
+  users-cache-data:
+    driver: local
+  users-db-data:
+    driver: local
+  users-zookeeper-data:
+    driver: local
+  users-kafka-data:
+    driver: local
+  user-grafana-storage:
+    driver: local

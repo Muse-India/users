@@ -5,5 +5,15 @@
   "dockerComposeFile": ["../../docker-compose.yaml"],
   "service": "backend",
   "shutdownAction": "stopCompose",
-  "workspaceFolder": "/workspace"
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Prisma.prisma",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "YoavBls.pretty-ts-errors"
+      ]
+    }
+  }
 }

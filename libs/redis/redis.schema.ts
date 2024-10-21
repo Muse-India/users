@@ -1,6 +1,11 @@
 import { Schema } from "redis-om";
 
-export const redisSchema: Schema = new Schema("redis", {
+export const userSchema: Schema = new Schema("redis", {
   // Define the schema here
-  key: { type: "string" },
+  email: { type: "string" },
+  phoneNumber: { type: "string" },
+  name: { type: "string" },
+  password: { type: "string" },
+  role: { type: "string" },
+  country: { type: "string" },
 });
