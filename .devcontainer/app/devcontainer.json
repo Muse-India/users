@@ -12,7 +12,8 @@
         "Prisma.prisma",
         "christian-kohler.npm-intellisense",
         "esbenp.prettier-vscode",
-        "YoavBls.pretty-ts-errors"
+        "YoavBls.pretty-ts-errors",
+        "ExodiusStudios.comment-anchors"
       ]
     }
   }

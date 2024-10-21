@@ -20,7 +20,8 @@ export const createUser = async (c: Context) => {
     // hash the password
     const hashedPassword = await hashPassword({ password, salt: 10 });
 
-    // save user to cache and send to kafka for processing
+    // TODO save user to cache and send to kafka for processing
 
     // return the user
+    return user;
 };
