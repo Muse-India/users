@@ -2,26 +2,36 @@ import { Context } from "hono";
 import { userType } from "../../libs/types/userType";
 import { getUser } from "../../libs/utils/getUser";
 import { hashPassword } from "../../libs/utils/hashPassword";
+import { addUser } from "../../libs/utils/addUser";
 
 export const createUser = async (c: Context) => {
-    const { country, email, name, password, phoneNumber, role }: userType = await c.req.json();
-    let user;
+  const { country, email, name, password, phoneNumber, role }: userType =
+    await c.req.json();
 
-    // check if the user already exists
-    user = await getUser(email);
+  // check if the user already exists
+  const user = await getUser(email);
 
-    if (user) {
-        return c.json({
-            error: "User already exists",
-            status: 400,
-        })
-    }
+  if (user) {
+    return c.json({
+      error: "User already exists",
+      status: 400,
+    });
+  }
 
-    // hash the password
-    const hashedPassword = await hashPassword({ password, salt: 10 });
+  // hash the password
+  const hashedPassword = await hashPassword({ password });
 
-    // TODO save user to cache and send to kafka for processing
+  const userDataToEnter = {
+    email,
+    name,
+    password: hashedPassword,
+    phoneNumber,
+    role,
+    country,
+  };
 
-    // return the user
-    return user;
+  const newUser = await addUser(userDataToEnter);
+
+  // return the user
+  return c.json({ message: "User created successfully", user: newUser }, 200);
 };

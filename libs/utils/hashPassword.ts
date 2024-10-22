@@ -1,12 +1,10 @@
-import { hash } from 'bcrypt';
-
 type hashPasswordProps = {
-    password: string;
-    salt?: number;
-}
+  password: string;
+  salt?: number;
+};
 
-export const hashPassword = async ({ password, salt = 10 }: hashPasswordProps): Promise<string> => {
-
-    return hash(password, salt);
-
-}
+export const hashPassword = async ({
+  password,
+}: hashPasswordProps): Promise<string> => {
+  return await Bun.password.hash(password);
+};

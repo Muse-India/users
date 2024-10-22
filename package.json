@@ -2,13 +2,12 @@
   "name": "hono-with-bun",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "prisma-build": "bunx prisma db push && bunx prisma studio",
+    "prisma": "bunx prisma db push && bunx prisma studio",
     "studio": "bunx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",
     "axios": "^1.7.7",
-    "bcrypt": "^5.1.1",
     "hono": "^4.6.5",
     "kafkajs": "^2.2.4",
     "redis": "^4.7.0",
