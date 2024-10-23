@@ -8,7 +8,7 @@ export const createAdmin = async () => {
     await admin.createTopics({
       topics: [
         {
-          topic: "users",
+          topic: "users-registrations",
           numPartitions: 2,
           replicationFactor: 1,
         },

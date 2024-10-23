@@ -7,7 +7,7 @@ export const consumerRegistration = async () => {
   console.log("Kafka Consumer connected");
 
   await consumer.subscribe({
-    topics: ["users"],
+    topics: ["users-registrations"],
     fromBeginning: true,
   });
   console.log("Consumer subscribed to users topic");

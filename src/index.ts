@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import userRoutes from "./routes/routes";
 import { connectToRedis } from "../libs/redis/redis.index";
 import { startServer } from "../libs/utils/startServer";
+import { responseTimeMiddleware } from "../middlewares/responseTimeMiddleware";
+import metricsRoutes from "./routes/metrics.routes";
+import userRoutes from "./routes/user.routes";
 
 const PORT = process.env.PORT || 3000;
 
@@ -10,8 +12,11 @@ const PORT = process.env.PORT || 3000;
 // example -> localhost:3000/api
 const app = new Hono().basePath("/api");
 
-// enable cors
+// middlewares
 app.use(cors());
+
+// response time middleware
+app.use(responseTimeMiddleware);
 
 // configuring redis cache
 await connectToRedis();
@@ -22,6 +27,7 @@ startServer().catch((error) =>
 );
 
 app.route("/users", userRoutes);
+app.route("/metrics", metricsRoutes);
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");
